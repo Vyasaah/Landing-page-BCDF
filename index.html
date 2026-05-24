@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BCDF – Bandung Cinta Damai Foundation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0D1B3E;
+      --blue:    #1A3A8F;
+      --blue-md: #2451C7;
+      --blue-lt: #3D6FE8;
+      --gold:    #C8922A;
+      --gold-lt: #E0A030;
+      --cream:   #F4F6FB;
+      --white:   #FFFFFF;
+      --gray:    #6B7280;
+      --gray-lt: #E8EDF7;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5vw;
+      background: rgba(244,246,251,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(26,58,143,0.12);
+    }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem; font-weight: 900;
+      color: var(--blue); letter-spacing: -0.03em;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: .88rem; font-weight: 500;
+      color: var(--navy); opacity: .65; transition: opacity .2s, color .2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--blue); }
+    .nav-cta {
+      background: var(--blue); color: var(--white);
+      padding: .52rem 1.3rem; border-radius: 100px;
+      font-size: .87rem; font-weight: 600; text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: var(--blue-md); transform: translateY(-1px); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1.1fr 0.9fr;
+      align-items: center; gap: 4rem;
+      padding: 9rem 5vw 5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 55% 65% at 85% 35%, rgba(26,58,143,.09) 0%, transparent 65%),
+        radial-gradient(ellipse 35% 45% at 5% 85%, rgba(200,146,42,.08) 0%, transparent 55%);
+    }
+    .hero-ring {
+      position: absolute; right: -60px; top: 8%;
+      width: 480px; height: 480px; border-radius: 50%;
+      border: 1px solid rgba(26,58,143,.1);
+      pointer-events: none;
+    }
+    .hero-ring::before {
+      content: ''; position: absolute; inset: 48px; border-radius: 50%;
+      border: 1px dashed rgba(200,146,42,.18);
+    }
+
+    .hero-text { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(26,58,143,.08); color: var(--blue);
+      font-size: .75rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; padding: .38rem .95rem; border-radius: 100px;
+      border: 1px solid rgba(26,58,143,.18); margin-bottom: 1.4rem;
+      animation: fadeUp .7s ease both;
+    }
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.6rem, 4.5vw, 4rem);
+      font-weight: 900; line-height: 1.08;
+      letter-spacing: -0.03em; color: var(--navy);
+      animation: fadeUp .8s .1s ease both;
+    }
+    h1 em { font-style: italic; color: var(--blue-md); }
+    .hero-sub {
+      margin-top: 1.4rem; font-size: 1rem; line-height: 1.75;
+      color: #4B5563; max-width: 480px;
+      animation: fadeUp .8s .2s ease both;
+    }
+    .hero-actions {
+      margin-top: 2.2rem; display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp .8s .32s ease both;
+    }
+    .btn-primary {
+      background: var(--blue); color: var(--white);
+      padding: .82rem 1.9rem; border-radius: 100px;
+      font-weight: 600; font-size: .93rem; text-decoration: none;
+      box-shadow: 0 4px 18px rgba(26,58,143,.28);
+      transition: background .2s, transform .15s, box-shadow .2s;
+    }
+    .btn-primary:hover { background: var(--blue-md); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,58,143,.35); }
+    .btn-outline {
+      border: 2px solid var(--navy); color: var(--navy);
+      padding: .82rem 1.9rem; border-radius: 100px;
+      font-weight: 600; font-size: .93rem; text-decoration: none;
+      transition: background .2s, color .2s, transform .15s;
+    }
+    .btn-outline:hover { background: var(--navy); color: var(--white); transform: translateY(-2px); }
+
+    .hero-stats { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.1rem; animation: fadeUp .9s .4s ease both; }
+    .stat-card {
+      background: var(--white); border-radius: 16px;
+      padding: 1.4rem 1.8rem;
+      border-left: 4px solid var(--blue);
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .stat-card:nth-child(2) { border-color: var(--gold); transform: translateX(18px); }
+    .stat-card:nth-child(3) { border-color: var(--blue-lt); }
+    .stat-card:hover { transform: translateX(6px) !important; box-shadow: 0 6px 28px rgba(0,0,0,.1); }
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 1.9rem; font-weight: 900; color: var(--blue);
+    }
+    .stat-card:nth-child(2) .stat-num { color: var(--gold); }
+    .stat-card:nth-child(3) .stat-num { color: var(--blue-lt); }
+    .stat-label { font-size: .83rem; color: var(--gray); margin-top: .15rem; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SECTION BASE */
+    section { padding: 6rem 5vw; }
+    .section-tag {
+      font-size: .75rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: .7rem;
+    }
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.9rem, 3vw, 2.7rem);
+      font-weight: 900; line-height: 1.15; letter-spacing: -0.02em;
+    }
+    .section-sub {
+      margin-top: .85rem; font-size: .97rem; line-height: 1.75;
+      color: var(--gray); max-width: 540px;
+    }
+
+    /* TENTANG */
+    #tentang {
+      background: var(--navy); color: var(--cream);
+      clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+      padding: 8rem 5vw;
+    }
+    #tentang .section-tag { color: var(--gold); }
+    #tentang .section-title { color: var(--white); }
+    #tentang .section-sub { color: rgba(244,246,251,.65); }
+    .tentang-grid {
+      margin-top: 3.5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+    }
+    .tentang-desc { font-size: 1rem; line-height: 1.85; color: rgba(244,246,251,.82); }
+    .tentang-desc p + p { margin-top: 1.1rem; }
+    .profil-card {
+      background: rgba(255,255,255,.07); border-radius: 20px;
+      padding: 2rem; border: 1px solid rgba(255,255,255,.1);
+    }
+    .profil-card h3 {
+      font-family: 'Fraunces', serif; font-size: 1.15rem;
+      color: var(--gold); margin-bottom: 1.2rem;
+    }
+    .profil-list { list-style: none; }
+    .profil-list li {
+      padding: .6rem 0; border-bottom: 1px solid rgba(255,255,255,.07);
+      font-size: .9rem; color: rgba(244,246,251,.78);
+      display: flex; align-items: flex-start; gap: .7rem;
+    }
+    .profil-list li:last-child { border-bottom: none; }
+    .profil-list li::before {
+      content: ''; display: block; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--gold);
+      margin-top: .45rem; flex-shrink: 0;
+    }
+
+    /* PILAR */
+    #pilar { background: var(--cream); }
+    .pilar-grid {
+      margin-top: 3rem;
+      display: grid; grid-template-columns: repeat(5,1fr); gap: 1.1rem;
+    }
+    .pilar-card {
+      background: var(--white); border-radius: 18px; padding: 1.7rem 1.3rem;
+      border-top: 3px solid var(--blue);
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+      display: flex; flex-direction: column; gap: .7rem;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .pilar-card:nth-child(2) { border-color: #1E88E5; }
+    .pilar-card:nth-child(3) { border-color: #0277BD; }
+    .pilar-card:nth-child(4) { border-color: #01579B; }
+    .pilar-card:nth-child(5) { border-color: var(--gold); }
+    .pilar-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(26,58,143,.12); }
+    .pilar-num {
+      font-family: 'Fraunces', serif; font-size: 1.6rem;
+      font-weight: 900; color: var(--blue); opacity: .18;
+      line-height: 1;
+    }
+    .pilar-name {
+      font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700; color: var(--navy);
+    }
+    .pilar-focus { font-size: .82rem; color: var(--gray); line-height: 1.55; }
+
+    /* PROGRAM */
+    #program { background: var(--gray-lt); }
+    .program-grid {
+      margin-top: 3rem;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem;
+    }
+    .program-card {
+      background: var(--white); border-radius: 20px;
+      overflow: hidden; box-shadow: 0 2px 14px rgba(0,0,0,.06);
+      display: flex; align-items: stretch;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .program-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
+    .program-accent {
+      width: 6px; flex-shrink: 0;
+      background: var(--blue);
+    }
+    .program-card:nth-child(2) .program-accent { background: var(--blue-lt); }
+    .program-card:nth-child(3) .program-accent { background: var(--gold); }
+    .program-card:nth-child(4) .program-accent { background: #0277BD; }
+    .program-body { padding: 1.6rem; }
+    .program-pilar {
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: .4rem;
+    }
+    .program-card:nth-child(2) .program-pilar { color: var(--blue-lt); }
+    .program-card:nth-child(3) .program-pilar { color: var(--gold); }
+    .program-card:nth-child(4) .program-pilar { color: #0277BD; }
+    .program-body h3 {
+      font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 700;
+      color: var(--navy); margin-bottom: .5rem;
+    }
+    .program-body p { font-size: .88rem; color: var(--gray); line-height: 1.65; }
+
+    /* GALERI */
+    #galeri { background: var(--cream); }
+    .galeri-grid {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      grid-template-rows: 200px 200px;
+      gap: .9rem;
+    }
+    .galeri-item {
+      border-radius: 14px; overflow: hidden;
+      position: relative; cursor: pointer;
+      transition: transform .3s, filter .3s;
+    }
+    .galeri-item:hover { transform: scale(1.025); filter: brightness(1.06); }
+    .galeri-item:nth-child(1) { grid-column: span 2; background: linear-gradient(135deg,#1A3A8F,#2451C7); }
+    .galeri-item:nth-child(2) { background: linear-gradient(135deg,#0D1B3E,#1A3A8F); }
+    .galeri-item:nth-child(3) { background: linear-gradient(135deg,#01579B,#0277BD); }
+    .galeri-item:nth-child(4) { grid-column: span 2; background: linear-gradient(135deg,#C8922A,#E0A030); }
+    .galeri-item:nth-child(5) { background: linear-gradient(135deg,#2451C7,#3D6FE8); }
+    .galeri-item:nth-child(6) { background: linear-gradient(135deg,#1A3A8F,#01579B); }
+    .galeri-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,.42); color: #fff;
+      font-size: .78rem; font-weight: 600; padding: .6rem 1rem;
+    }
+    .galeri-placeholder {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.2); font-family: 'Fraunces', serif;
+      font-size: 3rem; font-weight: 900; letter-spacing: -0.04em;
+    }
+
+    /* KONTAK */
+    #kontak {
+      background: var(--navy); color: var(--white);
+      clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 100%);
+      padding: 8rem 5vw 5rem;
+    }
+    #kontak .section-tag { color: var(--gold); }
+    #kontak .section-title { color: var(--white); }
+    .kontak-grid {
+      margin-top: 3.5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+    }
+    .kontak-info p {
+      font-size: .97rem; line-height: 1.8;
+      color: rgba(255,255,255,.72); margin-bottom: 2rem;
+    }
+    .sosmed-list { display: flex; flex-direction: column; gap: .8rem; }
+    .sosmed-item {
+      display: flex; align-items: center; gap: 1rem;
+      background: rgba(255,255,255,.08); border-radius: 12px;
+      padding: .9rem 1.2rem; text-decoration: none; color: var(--white);
+      border: 1px solid rgba(255,255,255,.08);
+      transition: background .2s, transform .2s, border-color .2s;
+    }
+    .sosmed-item:hover { background: rgba(255,255,255,.16); transform: translateX(4px); border-color: rgba(200,146,42,.4); }
+    .sosmed-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0;
+    }
+    .sosmed-text { font-size: .88rem; }
+    .sosmed-text strong { display: block; font-weight: 600; }
+    .sosmed-text span { font-size: .8rem; opacity: .65; }
+
+    .kontak-form-area {
+      background: rgba(255,255,255,.08); border-radius: 20px;
+      padding: 2rem; border: 1px solid rgba(255,255,255,.12);
+    }
+    .kontak-form-area h3 {
+      font-family: 'Fraunces', serif; font-size: 1.25rem;
+      color: var(--white); margin-bottom: 1.4rem;
+    }
+    .form-row { margin-bottom: 1rem; }
+    .form-row label { display: block; font-size: .82rem; margin-bottom: .38rem; opacity: .75; }
+    .form-row input, .form-row textarea {
+      width: 100%; padding: .72rem 1rem;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+      border-radius: 10px; color: var(--white); font-family: 'DM Sans', sans-serif;
+      font-size: .9rem; outline: none; resize: none;
+      transition: border .2s, background .2s;
+    }
+    .form-row input::placeholder, .form-row textarea::placeholder { color: rgba(255,255,255,.38); }
+    .form-row input:focus, .form-row textarea:focus {
+      border-color: var(--gold); background: rgba(255,255,255,.14);
+    }
+    .btn-send {
+      width: 100%; padding: .88rem;
+      background: var(--gold); color: var(--white);
+      border: none; border-radius: 12px;
+      font-family: 'DM Sans', sans-serif; font-size: .93rem; font-weight: 700;
+      cursor: pointer; transition: background .2s, transform .15s;
+    }
+    .btn-send:hover { background: var(--gold-lt); transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer {
+      background: #080F1E; color: rgba(244,246,251,.45);
+      padding: 2.2rem 5vw; text-align: center; font-size: .83rem; line-height: 1.9;
+    }
+    footer strong { color: var(--gold); }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      #hero { grid-template-columns: 1fr; padding-top: 7rem; }
+      .hero-stats { flex-direction: row; }
+      .stat-card:nth-child(2) { transform: none; }
+      .tentang-grid, .kontak-grid { grid-template-columns: 1fr; }
+      .pilar-grid { grid-template-columns: repeat(3,1fr); }
+      .pilar-card:nth-child(4), .pilar-card:nth-child(5) { grid-column: span 1; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 640px) {
+      .pilar-grid { grid-template-columns: 1fr 1fr; }
+      .pilar-card:nth-child(5) { grid-column: span 2; }
+      .program-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: column; }
+      .galeri-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3,160px); }
+      .galeri-item:nth-child(1), .galeri-item:nth-child(4) { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BCDF<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#tentang">Tentang</a></li>
+    <li><a href="#pilar">Pilar</a></li>
+    <li><a href="#program">Program</a></li>
+    <li><a href="#galeri">Galeri</a></li>
+    <li><a href="#kontak">Kontak</a></li>
+  </ul>
+  <a href="#kontak" class="nav-cta">Bergabung</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-text">
+    <div class="hero-badge">Bandung Cinta Damai Foundation</div>
+    <h1>Bandung yang Lebih <em>Damai</em> dan Berdaya</h1>
+    <p class="hero-sub">
+      Gerakan warga Bandung yang bekerja di lima pilar: kemanusiaan, kesehatan,
+      air bersih, UMKM, dan literasi. Kami percaya kebaikan hati warga Bandung itu besar —
+      hanya perlu jembatan yang rapi agar sampai kepada yang paling membutuhkan.
+    </p>
+    <div class="hero-actions">
+      <a href="#program" class="btn-primary">Lihat Program Kami</a>
+      <a href="#kontak" class="btn-outline">Jadi Relawan</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Pilar Program Aktif</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Program Unggulan Berjalan</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">Bandung</div>
+      <div class="stat-label">Kota yang kami cintai</div>
+    </div>
+  </div>
+</section>
+
+<!-- TENTANG -->
+<section id="tentang">
+  <div class="reveal">
+    <p class="section-tag">Tentang Kami</p>
+    <h2 class="section-title">Siapa BCDF?</h2>
+  </div>
+  <div class="tentang-grid reveal">
+    <div class="tentang-desc">
+      <p>
+        BCDF adalah gerakan warga Bandung yang bekerja di lima pilar: kemanusiaan, kesehatan,
+        air bersih, UMKM, dan literasi. Tujuannya sederhana: membuat Bandung lebih manusiawi,
+        sehat, dan bersahabat untuk semua.
+      </p>
+      <p>
+        Kami percaya kebaikan hati warga Bandung itu besar, hanya perlu jembatan yang rapi agar
+        bisa sampai ke mereka yang paling membutuhkan. Dari program makan siang, ambulans,
+        hingga literasi, BCDF berusaha menjadi jembatan itu.
+      </p>
+    </div>
+    <div class="profil-card">
+      <h3>Profil Singkat BCDF</h3>
+      <ul class="profil-list">
+        <li>Berbasis di Kota Bandung, Jawa Barat</li>
+        <li>Fokus pada warga rentan dan komunitas lokal</li>
+        <li>Berkolaborasi dengan relawan, kampus, komunitas, dan pelaku usaha</li>
+        <li>Menjunjung transparansi dan akuntabilitas publik</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PILAR -->
+<section id="pilar">
+  <div class="reveal">
+    <p class="section-tag">Lima Pilar</p>
+    <h2 class="section-title">Lima Pilar Cinta<br>untuk Kota Bandung</h2>
+    <p class="section-sub">
+      Setiap pilar punya fokusnya sendiri, tetapi semuanya bertemu di satu tujuan:
+      Bandung yang lebih damai dan berdaya.
+    </p>
+  </div>
+  <div class="pilar-grid reveal">
+    <div class="pilar-card">
+      <div class="pilar-num">01</div>
+      <div class="pilar-name">HumanityLover</div>
+      <div class="pilar-focus">Kemanusiaan dan bantuan darurat untuk warga yang membutuhkan</div>
+    </div>
+    <div class="pilar-card">
+      <div class="pilar-num">02</div>
+      <div class="pilar-name">HealthLover</div>
+      <div class="pilar-focus">Layanan kesehatan dan edukasi kesehatan komunitas</div>
+    </div>
+    <div class="pilar-card">
+      <div class="pilar-num">03</div>
+      <div class="pilar-name">WaterLover</div>
+      <div class="pilar-focus">Akses air bersih dan sanitasi layak untuk semua</div>
+    </div>
+    <div class="pilar-card">
+      <div class="pilar-num">04</div>
+      <div class="pilar-name">BizLover</div>
+      <div class="pilar-focus">Pemberdayaan UMKM dan penghidupan keluarga</div>
+    </div>
+    <div class="pilar-card">
+      <div class="pilar-num">05</div>
+      <div class="pilar-name">BookLover</div>
+      <div class="pilar-focus">Literasi dan ruang belajar untuk anak-anak Bandung</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAM -->
+<section id="program">
+  <div class="reveal">
+    <p class="section-tag">Program Unggulan</p>
+    <h2 class="section-title">Aksi Nyata,<br>Bukan Sekadar Label</h2>
+    <p class="section-sub">
+      Program yang berjalan di lapangan dan menyentuh langsung kehidupan warga Bandung.
+    </p>
+  </div>
+  <div class="program-grid reveal">
+    <div class="program-card">
+      <div class="program-accent"></div>
+      <div class="program-body">
+        <p class="program-pilar">WaterLover</p>
+        <h3>Sumur Bor Gratis</h3>
+        <p>
+          BCDF menyediakan sumur bor gratis untuk kawasan yang belum terjangkau akses
+          air bersih. Program ini memastikan warga memiliki sumber air layak untuk
+          kebutuhan sehari-hari.
+        </p>
+      </div>
+    </div>
+    <div class="program-card">
+      <div class="program-accent"></div>
+      <div class="program-body">
+        <p class="program-pilar">HumanityLover</p>
+        <h3>Bagi-Bagi Beras</h3>
+        <p>
+          Distribusi beras secara rutin kepada warga kurang mampu di Bandung.
+          Program ini memastikan kebutuhan pangan dasar terpenuhi bagi mereka
+          yang paling membutuhkan.
+        </p>
+      </div>
+    </div>
+    <div class="program-card">
+      <div class="program-accent"></div>
+      <div class="program-body">
+        <p class="program-pilar">HealthLover</p>
+        <h3>Layanan Ambulans Gratis</h3>
+        <p>
+          Ambulans BCDF siap melayani antar-jemput warga yang membutuhkan
+          pertolongan medis tanpa biaya. Menjangkau komunitas yang sulit
+          mengakses layanan kesehatan secara mandiri.
+        </p>
+      </div>
+    </div>
+    <div class="program-card">
+      <div class="program-accent"></div>
+      <div class="program-body">
+        <p class="program-pilar">Tim Kebersihan Masjid</p>
+        <h3>Bersih-Bersih Masjid</h3>
+        <p>
+          Tim relawan BCDF secara rutin melakukan kegiatan kebersihan masjid
+          di berbagai wilayah Bandung. Menjaga rumah ibadah tetap bersih, nyaman,
+          dan layak bagi seluruh jamaah.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERI -->
+<section id="galeri">
+  <div class="reveal">
+    <p class="section-tag">Galeri Kegiatan</p>
+    <h2 class="section-title">Momen di Lapangan</h2>
+    <p class="section-sub">Sekilas dokumentasi kegiatan BCDF bersama komunitas Bandung.</p>
+  </div>
+  <div class="galeri-grid reveal">
+    <div class="galeri-item">
+      <div class="galeri-placeholder">BCDF</div>
+      <div class="galeri-label">Distribusi Beras</div>
+    </div>
+    <div class="galeri-item">
+      <div class="galeri-placeholder">01</div>
+      <div class="galeri-label">Sumur Bor</div>
+    </div>
+    <div class="galeri-item">
+      <div class="galeri-placeholder">02</div>
+      <div class="galeri-label">Ambulans BCDF</div>
+    </div>
+    <div class="galeri-item">
+      <div class="galeri-placeholder">MASJID</div>
+      <div class="galeri-label">Bersih-Bersih Masjid</div>
+    </div>
+    <div class="galeri-item">
+      <div class="galeri-placeholder">03</div>
+      <div class="galeri-label">Komunitas Bandung</div>
+    </div>
+    <div class="galeri-item">
+      <div class="galeri-placeholder">04</div>
+      <div class="galeri-label">Relawan BCDF</div>
+    </div>
+  </div>
+  <p style="margin-top:1.4rem;font-size:.83rem;color:#9CA3AF;text-align:center;">
+    Placeholder — ganti dengan foto dokumentasi kegiatan BCDF yang asli
+  </p>
+</section>
+
+<!-- KONTAK -->
+<section id="kontak">
+  <div class="reveal">
+    <p class="section-tag">Hubungi Kami</p>
+    <h2 class="section-title">Mari Bergerak Bersama</h2>
+  </div>
+  <div class="kontak-grid reveal">
+    <div class="kontak-info">
+      <p>
+        BCDF terbuka untuk kolaborasi dengan siapa saja — relawan, komunitas, kampus,
+        maupun pelaku usaha. Bersama kita bisa membuat Bandung lebih damai dan berdaya.
+      </p>
+      <div class="sosmed-list">
+        <a href="https://bcdf.id" target="_blank" class="sosmed-item">
+          <div class="sosmed-dot"></div>
+          <div class="sosmed-text">
+            <strong>Website Resmi</strong>
+            <span>bcdf.id</span>
+          </div>
+        </a>
+        <a href="https://wa.me/628112011214" target="_blank" class="sosmed-item">
+          <div class="sosmed-dot"></div>
+          <div class="sosmed-text">
+            <strong>WhatsApp</strong>
+            <span>+62 811-2011-214</span>
+          </div>
+        </a>
+        <a href="mailto:bandungcdf@yahoo.com" class="sosmed-item">
+          <div class="sosmed-dot"></div>
+          <div class="sosmed-text">
+            <strong>Email</strong>
+            <span>bandungcdf@yahoo.com</span>
+          </div>
+        </a>
+        <a href="https://instagram.com/bcdf.id" target="_blank" class="sosmed-item">
+          <div class="sosmed-dot"></div>
+          <div class="sosmed-text">
+            <strong>Instagram</strong>
+            <span>@bcdf.id</span>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="kontak-form-area">
+      <h3>Kirim Pesan atau Aspirasi</h3>
+      <div class="form-row">
+        <label>Nama</label>
+        <input type="text" placeholder="Nama lengkap" />
+      </div>
+      <div class="form-row">
+        <label>Email atau WhatsApp</label>
+        <input type="text" placeholder="Kontak yang bisa dihubungi" />
+      </div>
+      <div class="form-row">
+        <label>Pesan atau Aspirasi</label>
+        <textarea rows="4" placeholder="Tuliskan pesan atau aspirasimu untuk Bandung..."></textarea>
+      </div>
+      <button class="btn-send">Kirim Pesan</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Bandung Cinta Damai Foundation (BCDF)</strong></p>
+  <p>Kota Bandung, Jawa Barat &nbsp;·&nbsp; <a href="https://bcdf.id">bcdf.id</a> &nbsp;·&nbsp; <a href="mailto:bandungcdf@yahoo.com">bandungcdf@yahoo.com</a></p>
+  <p style="margin-top:.7rem;font-size:.78rem;opacity:.4;">
+    &copy; 2025 BCDF &nbsp;·&nbsp; Transparansi & Akuntabilitas Publik
+  </p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Nav active highlight
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 130) current = s.id; });
+    links.forEach(l => {
+      const active = l.getAttribute('href') === '#' + current;
+      l.style.color = active ? 'var(--blue)' : '';
+      l.style.opacity = active ? '1' : '';
+    });
+  });
+
+  // Form feedback
+  document.querySelector('.btn-send').addEventListener('click', () => {
+    alert('Terima kasih! Pesan kamu akan segera kami tindaklanjuti.');
+  });
+</script>
+</body>
+</html>
